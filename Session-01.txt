@@ -121,8 +121,34 @@ OCPv4.22   k8s1.35   - Current version
 	
 Unit-3-# Authentication and Authorization
 
+K8s:-
+Layer-5  End user application
+Layer-4  Add-ons k8s services (auth, logging, metrix,monitoring, network etc)
+Layer-3  Certified k8s deployment (kubelet, etcd, kube-controller, kube-scheduler, kube-apiserver)
+Layer-2  Container Run Time (Crio,Containerd,docker,MInratis Container runtime)
+Layer-1  Operating System (RHEL/SUSE)
     
-	
 
-	
+Red Hat OpenShift:-
+
+Layer-7  End user application like Baking etc 
+Layer-6  Red Hat OpenShift Platform Plus (RHOPP) 
+Layer-5  Red Hat OpenShift Container Platform (RHOCP)
+Layer-4  Red Hat OpenShift Kubernetes Engine (RHOKE)
+Layer-3  Certified k8s deployment (kubelet, etcd, kube-controller, kube-scheduler, kube-apiserver)
+Layer-2  Container Run time (Crio)
+Layer-1  Operating System (RHEL coreOS)
+
+
+--- 
+- Deploy OCP cluster (3 master, 3 worker)
+- Openshift Virtualization operator 
+- Create Namespace
+- Create 3 VMs (KubeVirt)
+  vm-k8s-master01 
+  vm-k8s-worker01 
+  vm-k8s-worker02
+- Deploy k8s1.35 cluster on above VMs (Those VMs in OCP cluster - KubeVirt)
+
+ - OADP backup and restore (
    
