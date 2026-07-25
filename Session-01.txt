@@ -1,0 +1,128 @@
+https://github.com/cprakash2118/DO280-Q3-Jul26
+https://reprint.forrester.com/reports/the-forrester-wavetm-multicloud-container-platforms-q3-2025-f3367e46/index.html
+
+Day 0    [Plan and implementation]
+Day 1/2  [DO280/DO380 - Post Build Tasks ]
+
+
+### Point-01:-
+
+Product - Red Hat OpenShift 
+1-) Cloud services editions
+ - Red Hat OpenShift Service on AWS       [ROSA; Platform=AWS-Cloud] 
+ - Microsoft Azure Red Hat OpenShift      [ARO ; Platform=MS-Azure-CLoud]
+ - Red Hat OpenShift Dedicated            [Dedicated; Platform=AWS/GCP]
+ - Red Hat OpenShift on IBM Cloud         [IBM OpenShift ; Platform=IBM-Cloud]
+ 
+2-) Self-managed editions
+ - Red Hat OpenShift Kubernetes Engine       [RHOKE ; Basic ] 
+ - Red Hat OpenShift Container Platform      [RHOCP ; Standard ]
+ - Red Hat OpenShift Virtualization Engine   [RHOVE ; Add-ons - Specific to Virtualization workload only]
+ - Red Hat OpenShift Platform Plus           [RHOPP ; Add-ons ]
+ 
+3-) Services & add-ons
+ - Red Hat OpenShift AI                                 [AI267/EX267]
+ - Red Hat OpenShift Lightspeed
+ - Red Hat OpenShift Virtualization                     [Do156/EX156; DO256/EX316 ; DO336/EX336]
+ - Red Hat Quay
+ - Red Hat Advanced Cluster Management for Kubernetes   [DO432/EX432]
+ - Red Hat Advanced Cluster Security for Kubernetes     [DO430/EX430]
+ - Red Hat Advanced Developer Suite
+ - Red Hat OpenShift Consulting
+
+- Red Hat OpenShift is hybrid CLoud (Public/Private/Bare metal deployment)
+https://www.redhat.com/en/resources/openshift-skill-paths-datasheet
+
+1-# Administrator track:- (Day 1/2 ops)
+DO180/EX180  - Admin I 
+DO280/EX280  - Admin II 
+DO380/EX380  - Admin III 
+
+2-# Red Hat OpenShift Virtualization skills path:-
+DO156/EX156   OpenShift Virtualization Admin I 
+DO256/EX316   OpenShift Virtualization Admin II 
+DO336/EX336   OpenShift Virtualization with AAP 
+
+3-# Red Hat OpenShift Administrator specializations:-
+DO370/EX370 - ODF (Enterprise Storage)
+DO430/EX430 - ACS (Security)
+DO432/EX432 - ACM (Multi cluster management)
+
+
+DO280 + DO380 + DO370 (ODF)
+https://www.redhat.com/en/services/certifications
+
+##Red Hat Certified Architect in OpenShift
+EX280: Red Hat Certified OpenShift Administrator exam
+EX380: Red Hat Certified Advanced System Administrator in OpenShift exam
+
+Take and pass at least three of the following:
+EX316: Red Hat Certified Specialist in OpenShift Virtualization exam
+EX336: Red Hat Certified Specialist in Automating OpenShift Virtual Machine Management exam
+EX370: Red Hat Certified Specialist in OpenShift Data Foundation exam
+EX430: Red Hat Certified Specialist in OpenShift Advanced Cluster Security exam
+EX432: Red Hat Certified Specialist in OpenShift Advanced Cluster Management exam
+
+
+-# Product - Red Hat OpenShift
+-# Training & Certificatoin roadmap 
+-# OpenShift belongs to hybrid cloud (Deploy OpenShift on Public/Private/Virtualization/bare metal).
+-# OpenShift Platform - Deploy & run "Container workload", "Virtualization workload" and also "AI/ML workload".
+
+
+###Point-2-# Classroom Environment (Relate with Production setup).
+1-) User details:-
+   - Login to VMs/Servers:-
+     student/student [sudo access]
+	 root/redhat 
+	 
+   - Login to OpenShift Cluster cluster:-
+     admin/redhatocp ["cluster-admin" access ; it's same as root access w.r.t Linux]   
+	 developer/developer 
+
+   - API URL - https://api.ocp4.example.com:6443 
+   Example:-
+   $ oc login -u admin -p redhatocp https://api.ocp4.example.com:6443 
+   
+   https://api.ocp4.example.com:6443 
+   ocp4 - cluster Name 
+   example.com - Base Domain
+   
+--------------------------
+OCPv4.18   k8s1.31   - As per DO280 LAB 
+OCPv4.19   k8s1.32 
+OCPv4.20   k8s1.33
+OCPv4.21   k8s1.34
+OCPv4.22   k8s1.35   - Current version
+---------------------------
+
+2-) Domain/Network:-
+   
+    Network Name                      Doamin  Name                        IP Range 
+	Classroom Network                 example.com                        172.25.252.0/24 
+	Student Network                   lab.example.com                    172.25.250.0/24 
+	Cluster Network                   ocp4.example.com                   192.168.50.0/24 
+	
+3-) VMs/Servers:-
+    classroom.example.com           -> Proxy server - which connect to internet (quay.io/github.com etc).
+    workstation.lab.example.com     -> JUMP server (From here login to OCP cluster)
+	bastion.lab.example.com         -> Act as router and connect student network to classroom network (DNS).
+	utility.lab.example.com         -> DNS/HAproxy,DHCP,PXE-KickStart,NFS-Server (StorageClass to OCP cluster).
+	
+	idm.ocp4.example.com            -> LDAP server (Integrated with OCP cluster)
+	FYI- admin/developer - Belongs to LDAP server.
+	- IdP (Identity Providers) - htpasswd, LDAP, AD, OpenID Connect like RHSSO, PingIdentity 
+	- ON behalf of OpenShift "OAuth" sync with all IdPs (OAuth is an Identity Broker).
+	
+	registry.ocp4.example.com      -> Images 
+	git.ocp4.example.com           -> Git repo (code repo like yaml/json etc)
+	
+	master01.ocp4.example.com      -> SNO (Single Node OpenShift)
+	
+Unit-3-# Authentication and Authorization
+
+    
+	
+
+	
+   
