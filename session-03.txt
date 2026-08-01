@@ -1,0 +1,121 @@
+
+Login to ROL (Red Hat Online Learning)
+ https://rol.redhat.com (Red Hat Login ID)
+ Click on "Join"
+ Click on "Lab" and access your lab (Click on "OPEN CONSOLE" for workstation). 
+ CLick on "Resources" then click on "BookSelf" and download eBook PDF.
+
+ Ctrl + Shift + "+" -> 
+ 
+ 
+ Exam Questions 
+ Information link - https://docs.redhat.com/en/documentation/openshift_container_platform/4.18
+  - API URL 
+  - Web Console 
+  - workbench
+ 
+---------------------
+
+Quick Recap:-
+
+POint-01# Product & Add-ons.
+ Product - Red Hat OpenShift 
+ Add-ons - ACM, ACS, ODF, AI etc 
+
+POint-02# Classroom Environment.
+ - Users - student/student (VMs login) ; admin/redhat (OCP cluster login)
+ - Domain - (lab.example.com ; ocp4.example.com)
+ - VMs 
+   - workstation (Jump); utility/bastion.lab.example.com (imp services)
+   - master01.ocp4.example.com (OCP cluster node - master/worker nodes - SNO)
+
+POint-02# Authentication and Authorization (Unit 3rd)
+ - Login to OCP cluster 
+   1-) TOken based authentication via OAuth (OAuth sync with multiple IdPs)
+   2-) Client Certificate (cert based authentication).
+       1) --kubernetes 
+	   2) KUBECONFIG 
+	   3) Copy to ~/.kube/config 
+	   FYI- Use "kubeconfig" file.
+
+-------------------------------------------------------------------------------------------------------	  
+Task-00:- Login to OCP cluster.
+  - Token based via OAuth.
+  - Client Certificate 
+  FYI
+  - API Server & Web console
+  - API URL - https://api.ocp4.example.com:6443 
+  - Web URL - https://console-openshift-console.apps.ocp4.example.com 
+
+------------------------------------------------------------------------------------------------ 
+Task-01:- Users and login 
+  user1-5/redhat     secret-sre    ; IdP Name=IdP-htpasswd-SRE-Team
+  user6-10/redhat    secret-devops ; IdP Name=IdP-htpasswd-DevOps-Team
+  user11-20/redhat   secret-myapp  ; IdP Name=IdP-htpasswd-Myapp-Team
+  
+   BookMyShow.com (Containerized deployment on OCP/k8s cluster).
+     - ui-app 
+	 - avl-app 
+	 - booking-app      (Example)
+	 - playment-app
+	 - noti-app 
+ 
+Task-02:- group and users 
+    Team          Groups 
+  SRE-Team    -> sre-grp 
+  DevOps-Team -> devops-grp
+  Myapp-Team  -> myapp-grp   
+  
+************************* Discussion Start *******************************
+- Defining and Applying Permissions with RBAC
+- Authorization process 
+  Rule  - Allowed actions for objects or groups of objects.
+  Role  - Sets of rules. Users and groups can be associated with multiple roles.
+  Binding - Assignment of users or groups to a role.
+  
+- Scope of RBAC.
+  1-) Cluster Level 
+  2-) Namespace/local level 
+
+- Binding:-
+  - ClusterRoleBindings 
+  - RoleBindings
+
+Role vs RoleBindings
+
+Default Roles:-
+1-# cluster-admin (same as root account w.r.t Linux) 
+2-# cluster-reader 
+3-# cluster-status 
+4-# self-provisioner
+5-# admin (w.r.t namespace)
+6-# edit (w.r.t namespace - able to edit k8s/ocp resources like Deployment,Secret etc)
+7-# view (w.r.t namespace - able to view k8s/ocp resources - Monitoring/logging solution)
+ 
+************************* Discussion Ends *******************************
+
+
+Task-03:- Role Based access to user/groups (Role & RoleBindings)
+   sre-grp     -> cluster-admin access.
+   devops-grp  -> self-provisioner (Only this group can create namespace).
+   Myapp-Team  -> w.r.t Namespace="ns-booking-app" 
+      user11-13 belongs to admin w.r.t namespace="ns-booking-app"
+	  user14-18 belongs to edit w.r.t namespace="ns-booking-app"
+	  user19-20 belongs to view w.r.t namespace="ns-booking-app"
+	  
+Task-04:- LDAP reconfigure as per LDAP server (idm.ocp4.example.com)
+   - Discuss few concepts about LDAP.
+
+###############################################
+Container Engine (crio,podman,docker)
+Container Orchetration (k8s -> OCP)
+Product - Red Hat OpenShift
+  - k8s as baseline  (namespace), authentication solution (token, client-certification) 
+  - OpenShift authentication (OAuthv2.0 - builtin service)
+  - OAUth connect with any IdP.
+  - RBAC (via OC - Cluster/namespace - MultiCluster)
+  
+  
+- Authentication (htpasswd,LDAP,OpenID, AC etc )
+- Authorization  (cluster/namespace)
+- Logging Solution (Vector - Log collection)

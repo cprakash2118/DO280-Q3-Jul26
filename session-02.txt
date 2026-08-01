@@ -1,0 +1,100 @@
+#Quick Recap:-
+Point-1) Product [Product=Red Hat OpenShift, Add-ons=OpenShift Virtulization/AI/DataFoundation/ACS/ACM etc]
+Point-2) Classroom Environment 
+- OCP cluster [3 master, N worker nodes, infra nodes, support services running on VMs/servers]
+- Credentials required for OCP login.
+  admin/redhatocp 
+- API URL 
+  https://api.ocp4.example.com:6443 
+- Wen Console URL
+  https://console-openshift-console.apps.ocp4.example.com 
+  
+Example:-
+  $ oc login -u admin -p redhatocp https://api.ocp4.example.com:6443 
+  $ oc whoami 
+  $ oc whoami -t 
+  $ oc status 
+  $ oc version 
+  $ oc get clusterversion 
+  $ oc get nodes 
+  
+Point-3) Authentication & Authorization.
+  3.1-# Authentication via OAuth.
+        - IdPs (Identity Provider - htpasswd, LDAP, OIDC=RHSSO, PingIdentity etc).
+  3.2-# Authentication via Client Certificate.
+        - Client Certificate X509 for authentication.
+		
+
+  3.1-# Authentication via OAuth.
+       What is OAuth ?
+	   OAuth is an identity broker, On behalf of OpenShift OAuth sync with IdP (Identity Provider).
+
+       What is IdP?
+       Identity Provider like htpasswd (local), LDAP, Active Directory, RHSSO, AWS IAM, Google/Git Authenticator.
+   
+       As per DO280v418 -> Using htpasswd as IdP.
+      
+Lab-01-# 
+Task-01
+ - Create users using IdP=htpasswd
+   UserName=user1-5/redhat ; secret-name=secret-sre ; IdP Name="IdP-htpasswd-sre-Team"
+   UserName=user6-10/redhat ; secret-name=secret-devops ; IdP Name="IdP-htpasswd-devops-Team"
+   UserName=user11-20/redhat ; secret-name=secret-myapp ; IdP Name="IdP-htpasswd-myapp-Team"   
+
+Step-1# Create User's database. 
+  $ htpasswd --help 
+  $ htpasswd -c -B -b htpasswd-file user1 redhat
+  $ htpasswd -B -b htpasswd-file user2 redhat
+  $ htpasswd -B -b htpasswd-file user3 redhat
+  $ htpasswd -B -b htpasswd-file user4 redhat
+  $ htpasswd -B -b htpasswd-file user5 redhat  
+  $ cat htpasswd-file
+  
+Step-2# Create secret (Place this information to OCP cluster).
+  $ oc create secret generic secret-sre --from-file htpasswd=htpasswd-file -n openshift-config 
+  $ oc get secret secret-sre -n openshift-config
+  
+Step-3# Update to OAuth service.
+  $ oc get oauth cluster 
+  $ oc get oauth cluster -o yaml > oauth.yaml
+  $ vim oauth.yaml 
+  https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/authentication_and_authorization
+  
+  $ oc apply -f oauth.yaml 
+
+Step-4# Verify the work 
+  $ oc get pods -n openshift-authentication
+  Oauth pods are getting restarted to refelect new updated changes.
+  
+  $ oc login -u userName -p password https://api.ocp4.example.com:6443 
+ 
+ Login as admin (cluster-admin access)
+ 
+  $ oc get users 
+  $ oc get identity 
+  
+--------------------------------------
+1-) Login to ROL with Red Hat Login ID.
+  https://rol.redhat.com 
+
+2-) Access lab and start (Click on "Join - DO280" -> Then access "Lab").
+
+3-) Start Lab and access "workstation" console.
+
+4-) Open terminal and oc login utility node.
+  $ ssh lab@utility 
+  $ ./sign.sh 
+  
+  Note: Wait for 20-25 mins 
+  and Open other tab 
+  
+  $ oc login -u admin -p redhatocp https://api.ocp4.example.com:6443 
+  
+--------------------------------------
+
+
+--------------------------------------
+  
+  
+
+   

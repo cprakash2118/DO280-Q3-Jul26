@@ -1,0 +1,138 @@
+-------------------------------------------------------------------------------------------------------	  
+Task-00:- Login to OCP cluster.
+  - Token based via OAuth.
+  - Client Certificate 
+  FYI
+  - API Server & Web console
+  - API URL - https://api.ocp4.example.com:6443 
+  - Web URL - https://console-openshift-console.apps.ocp4.example.com 
+
+------------------------------------------------------------------------------------------------ 
+Task-01:- Users and login 
+  user1-5/redhat     secret-sre    ; IdP Name=IdP-htpasswd-SRE-Team
+  user6-10/redhat    secret-devops ; IdP Name=IdP-htpasswd-DevOps-Team
+  user11-20/redhat   secret-myapp  ; IdP Name=IdP-htpasswd-Myapp-Team
+  
+   BookMyShow.com (Containerized deployment on OCP/k8s cluster).
+     - ui-app 
+	 - avl-app 
+	 - booking-app      (Example)
+	 - playment-app
+	 - noti-app 
+ 
+Task-02:- group and users 
+    Team          Groups 
+  SRE-Team    -> sre-grp 
+  DevOps-Team -> devops-grp
+  Myapp-Team  -> myapp-grp   
+  
+
+
+Task-03:- Role Based access to user/groups (Role & RoleBindings)
+   sre-grp     -> cluster-admin access.
+   devops-grp  -> self-provisioner (Only this group can create namespace).
+   Myapp-Team  -> w.r.t Namespace="ns-booking-app" 
+      user11-13 belongs to admin w.r.t namespace="ns-booking-app"
+	  user14-18 belongs to edit w.r.t namespace="ns-booking-app"
+	  user19-20 belongs to view w.r.t namespace="ns-booking-app"
+	  
+Task-04:- LDAP reconfigure as per LDAP server (idm.ocp4.example.com)
+   - Discuss few concepts about LDAP.
+
+#########################
+Task-01:-
+Step-01:- Create user/passowrd database.
+$ htpasswd --help 
+$ htpasswd -c -B -b  htpasswd-upload-sre-team user1 redhat123 
+$ cat htpasswd-upload-sre-team
+$ htpasswd    -B -b  htpasswd-upload-sre-team user2 redhat123
+$ htpasswd    -B -b  htpasswd-upload-sre-team user3 redhat123 
+$ htpasswd    -B -b  htpasswd-upload-sre-team user4 redhat123
+$ htpasswd    -B -b  htpasswd-upload-sre-team user5 redhat123
+
+Step-02:- Inject the information( from file data)  to OCP cluster via "secret".
+FYI- "secret" is k8s/ocp resource.
+Note: You must be login to OCP cluster as "cluster-admin" [FYI- cluster-admin is same as root account w.r.t Linux]
+
+$ oc login -u admin -p redhatocp https://api.ocp4.example.com:6443 
+$ oc whoami 
+admin
+$ oc version 
+$ oc get nodes 
+
+$ oc create secret generic secret-sre-team --from-file htpasswd=htpasswd-upload-sre-team -n openshift-config
+FYI:-
+ SecretType=generic 
+ SecretName=secret-sre-team
+ Data - From file 
+ -n (namespace)=openshift-config 
+
+Once secret created then verify the secret.
+$ oc get secret secret-sre-team -n openshift-config
+$ oc get secret secret-sre-team -n openshift-config -o yaml
+$ oc get secret secret-sre-team -n openshift-config -o json 
+  
+FYI
+- Namespace is a resource which allow to keep other k8s/ocp resources.
+- Example:- condier k8s/ocp "namespace" same as "Directory" w.r.t Linux/Unix.
+- k8s/ocp resources - pod,replicaset,deployment,secret,configmap, etc.
+
+
+
+Step-03:- Update to "oauth" w.r.t IdP (Identity Provider - htpasswd, LDAP, OpenID Connect, RHSSO, IBM SSO etc), secret details.
+
+$ oc get oauth cluster 
+$ oc get oauth cluster -o yaml 
+$ oc get oauth cluster -o yaml > oauth.yaml  (It can be anyname but with *.yaml/yml extention). 
+
+What informaiton we need to update?
+How will get the syntax, any reference link/doc? 
+
+Answer is "yes" - doc called CUDO (Customer Documentation).
+https://docs.redhat.com/en/documentation/openshift_container_platform/4.14
+https://docs.redhat.com/en/documentation/openshift_container_platform/4.14/html/authentication_and_authorization/index
+
+- Open in single HTMl page of PDF.
+- Search for "identityProvider" 
+
+
+vim oauth.yaml 
+
+:set paste (enter)
+again 
+:set cuc (enter)
+then press "i" key for insert mode and paste below contents.
+
+  - name: IdP-htpasswd-sre-team 
+    mappingMethod: claim 
+    type: HTPasswd
+    htpasswd:
+      fileData:
+        name: secret-sre-team 
+
+Press "Esc" key to lock mode.
+:wq (enter)
+
+
+$ oc apply -f oauth.yaml 
+$ oc get pods -n openshift-authetication
+$ watch oc get pods -n openshift-authetication   (To come out from here - press "ctrl + c).
+
+
+Login to ocp cluster using your users accounts.
+
+$ oc login -u user1 -p redhat123 https://api.ocp4.example.com:6443 
+$ oc whoami 
+$ oc whoami -t 
+
+Login to other users also and verify the work.
+Once all login verifed the login back to cluster-admin via admin/kubeadmin user.
+
+$ oc login -u admin -p redhat123 https://api.ocp4.example.com:6443 
+$ oc whoami 
+admin
+$oc get users 
+$ oc get identity 
+$ oc adm policy add-cluster-role-user cluster-admin user11 
+
+TASK end here.

@@ -1,0 +1,70 @@
+Point-01-) Classroom environment:-
+ W.r.t Login to VMs:-
+ - student/student 
+ - root/redhat 
+ 
+ W.r.t Login to OCP cluster:-
+ - admin/redhatocp 
+ - developer/developer
+ 
+ Login to Workstation node (via Console) - Click on "Open Console" 
+ FYI- workstation node as JUMP server, used for login to OCP cluster.
+ 
+ - OPen Terminal - "Click on Activity" then click on "Terminal".
+ 
+ Login to OCP cluster:-
+ $ oc login -u admin -p redhatocp https://api.ocp4.example.com:6443
+ FYI- Login to OCP cluster, required below points.
+ userName=admin
+ password=redhatocp 
+ apiURL=https://api.ocp4.example.com:6443 
+ 
+ 
+ $ oc whoami 
+ admin 
+ $ oc whoami -t 
+ akjsdhasjdkasjdhaskj
+ $ oc whoami --show-console 
+ https://console-openshift-console.apps.ocp4.example.com 
+ Use same admin/redhatocp credentials to login to OCP cluster via Web COnsole.
+ 
+------------------------------------------------------------------------------------------------------------------- 
+Task-01:-
+ - Login to OCP cluster using CLI
+ - Login to OCP cluster using Web Console
+ 
+Solution:-
+ - Login to workstation.
+ - Open termianl and access to OCP user via (username/password and API URL).
+ - Get the web console URL and try to login to OCP cluster via admin/password.
+ - Select "Red Hat Identity Management" then provide admin/redhatocp logins.
+
+*********************************
+$ root@utlity 
+# cd /home/lab/ocp4/auth
+# ls 
+kubeconfig kubeadmin-password 
+# scp -r kube* student@workstation:/home/student/
+Some messsage the press "y" and continue...
+Student's Password: student 
+# exit
+$ cat /home/student/kubeadmin-password ; echo 
+alksdjlkasjdlsak
+$ oc login -u kubeadmin -p alksdjlkasjdlsak https://api.ocp4.example.com:6443 
+
+------ Backdoor entry for cluster-admin --------------
+$ ls -l kubeadmin
+$ export KUBECONFIG=/home/student/kubeconfig 
+$ env | grep KUBECONFIG
+KUBECONFIG=/home/student/kubeconfig
+$ unset KUBECONFIG
+$ env | grep KUBECONFIG
+No Output 
+
+$ oc get pods -n openshift-authentication
+$ oc get pods -n openshift-apiserver 
+$ oc get pods -n openshift-kube-apiserver
+$ oc get pods -n openshift-etcd 
+$ oc get pods -n openshift-controller
+
+If all pods are running then all to login to OCP cluster.
