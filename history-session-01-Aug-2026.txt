@@ -1,0 +1,522 @@
+    1  exit
+    2  exit
+    3  exit
+    4  exit
+    5  exit
+    6  exit
+    7  oc logoin -u admin -p redhatocp https://api.ocp4.example.com:6443 
+    8  oc login -u admin -p redhatocp https://api.ocp4.example.com:6443 
+    9  oc get co
+   10  oc get mcp
+   11  oc get mc
+   12  oc whoami 
+   13  oc whoami --show-console 
+   14  oc get mc
+   15  ssh core@192.168.50.10 
+   16  oc get mc
+   17  oc login -u admin -p redhatocp https://api.ocp4.example.com:6443 
+   18  oc get co
+   19  oc get mcp
+   20  oc get co
+   21  lab start operators-cli
+   22  cd DO280/labs/operators-cli/
+   23  pwd
+   24  ll
+   25  vim namespace.yaml 
+   26  vim operator-group.yaml 
+   27  vim -O subscription.yaml ../../solutions/operators-cli/subscription.yaml 
+   28  oc get catalogsources.operators.coreos.com -n openshift-marketplace 
+   29  vim -O subscription.yaml ../../solutions/operators-cli/subscription.yaml 
+   30  ll
+   31  oc apply -f namespace.yaml 
+   32  oc apply -f operator-group.yaml 
+   33  oc apply -f subscription.yaml 
+   34  oc describe  operator file-integrity-operator|less
+   35  #install-gkpjg
+   36   oc get installplan -n openshift-file-integrity  install-gkpjg -o jsonpath='{.spec}{"\n"}'
+   37   oc patch installplan install-gkpjg --type merge -p  '{"spec":{"approved":true}}' -n openshift-file-integrity
+   38   oc get installplan -n openshift-file-integrity  install-gkpjg -o jsonpath='{.spec}{"\n"}'
+   39   oc describe operator file-integrity-operator  | grep InstallSucceeded -A4 -B4
+   40  ll
+   41  vim -O operator-group.yaml subscription.yaml 
+   42  oc projects | grep file 
+   43  oc get og,ip,sub,csv -n openshift-file-integrity
+   44  oc explain scc|less
+   45  oc get scc |less
+   46  oc new-project ns-demo01 
+   47  oc project -q
+   48  oc new-app --name myapp quay.io/cprakash2118/april-java-unzip-httpd-image-02
+   49  oc get pods
+   50  watch oc get pods
+   51  oc get pods
+   52  oc logs myapp-6654bc5db5-ngx77
+   53  oc get scc |grep pre
+   54  oc get scc |grep pr
+   55  oc get pods
+   56  oc get sa
+   57  oc create sa app-sa 
+   58  oc adm policy add-scc-to-user anyuid app-sa 
+   59  oc adm policy add-scc-to-user anyuid -z app-sa 
+   60  oc adm policy remove-scc-from-user app-sa 
+   61  oc adm policy remove-scc-from-user anyuid app-sa 
+   62  oc adm policy add-scc-to-user anyuid -z app-sa 
+   63  oc get pods
+   64  oc set serviceaccount deployment myapp app-sa 
+   65  oc get pods
+   66  oc get svc 
+   67  oc describe svc 
+   68  ssh lab@utility 
+   69  oc get nodes -o=name
+   70  oc login -u admin -p redhatocp https://api.ocp4.example.com:6443 
+   71  oc get co
+   72  uptime 
+   73  oc get mcp
+   74  oc get mc
+   75  oc new-project ns-demo01 
+   76  oc project ns-demo01 
+   77  oc get pods
+   78  oc get sa
+   79  oc delete project ns-demo01 
+   80  oc new-project ns-demo01 
+   81  oc project -q
+   82  oc new-app --name myapp quay.io/cprakash2118/april-java-unzip-httpd-image-02
+   83  oc get pods
+   84  oc logs myapp-6654bc5db5-sqh7t
+   85  oc create serviceaccount app-sa 
+   86  oc get pod/myapp-6654bc5db5-sqh7t -o yaml | oc adm policy scc-subject-review -f -
+   87  oc adm policy add-scc-to-user restricted-v2 -z app-sa 
+   88  oc get scc 
+   89  oc get scc | awk -F" " '{print $1}'
+   90  oc get pods
+   91  oc set serviceaccount deployment myapp app-sa 
+   92  oc get pods
+   93  oc get pod/myapp-96cbf7c69-hzv7q -o yaml | oc adm policy scc-subject-review -f -
+   94  oc get pods
+   95  oc new-app --name yourapp --image registry.ocp4.example.com:8443/redhattraining/hello-world-nginx:v1.0
+   96  oc get pods
+   97  oc rsh yourapp-6f87bdffc-b44wk 
+   98  oc create sa myapp-sa 
+   99  oc get scc | awk -F" " '{print $1}'
+  100  oc adm policy add-scc-to-user privileged -z myapp-sa 
+  101  oc edit deployment yourapp 
+  102  oc get pods
+  103  oc rsh yourapp-d9b7d7b4-xhcsw 
+  104  oc edit deployment yourapp 
+  105  cat /etc/crontab 
+  106  oc create cronjob --dry-run=client -o yaml test --image=registry.access.redhat.com/ubi9/ubi:9 --schedule='0 0 * * *' -- curl https://example.com > mycronjobs.yaml 
+  107  vim mycronjobs.yaml 
+  108  lab start appsec-prune
+  109   oc new-project appsec-prune
+  110  cd ~/DO280/labs/appsec-prune
+  111  ll
+  112  oc get deployments -n prune-apps -o wide
+  113  oc get pods -n prune-apps
+  114  oc debug node/master01 -- chroot /host crictl images | egrep '^IMAGE|httpd|nginx'
+  115  oc get deployments -n prune-apps -o wide
+  116  oc get pods -n prune-apps
+  117  oc debug node/master01 --  chroot /host crictl rmi --prune
+  118  oc delete deployment nginx-ubi{7,8,9}
+  119  oc delete deployment nginx-ubi{7,8,9} -n prune-apps
+  120  ll
+  121  vim configmap-prune.yaml 
+  122  vim cronjob-prune.yaml 
+  123  oc project -q 
+  124  oc get cm
+  125  oc get cronjobs.batch 
+  126  oc apply -f configmap-prune.yaml 
+  127  oc get cm
+  128  oc get cm maintenance -o yaml 
+  129  oc apply -f cronjob-prune.yaml 
+  130  oc get cronjobs.batch 
+  131  watch oc get cronjobs.batch,pods
+  132  oc get pods
+  133  oc logs pods/image-pruner-29757822-9whw8 
+  134  oc delete cronjob/image-pruner
+  135  oc create sa image-pruner
+  136   oc adm policy add-scc-to-user privileged   -z image-pruner
+  137  vim cronjob-prune.yaml 
+  138  oc apply -f cronjob-prune.yaml 
+  139  oc get cronjobs.batch 
+  140  oc get cronjobs.batch,pods
+  141  watch oc get cronjobs.batch,pods
+  142  oc get pods
+  143  oc logs  pods/image-pruner-29757826-x7hz6 
+  144  oc project -q 
+  145  oc get sa
+  146  history 
+  147   oc adm policy add-cluster-role-to-user cluster-admin -z image-pruner
+  148  watch oc get cronjobs.batch,pods
+  149  ssh lab@utility  
+  150  oc login -u admin -p redhatocp https://api.ocp4.example.com:6443 
+  151  oc get scc | awk -F" " '{print $1}'
+  152  oc projects | grep demo 
+  153  oc delete namespaces ns-demo01 
+  154  oc new-project ns-demo01 
+  155  oc project -q 
+  156  oc new-app --name myapp quay.io/cprakash2118/april-java-unzip-httpd-image-02
+  157  oc get pods
+  158  watch oc get pods
+  159  oc get pods
+  160  oc logs myapp-6654bc5db5-7l89q 
+  161  oc get pods
+  162  oc create serviceaccount app-sa 
+  163  oc get sa
+  164  #oc adm policy add-scc-to-user 
+  165  oc get pod/myapp-6654bc5db5-7l89q -o yaml | oc adm policy scc-subject-review -f -
+  166  oc adm policy add-scc-to-user restricted-v2 -z app-sa 
+  167  oc get pods
+  168  oc set serviceaccount deployment myapp app-sa 
+  169  oc get pods
+  170  oc new-app --name yourapp  --image registry.ocp4.example.com:8443/redhattraining/hello-world-nginx:v1.0
+  171  oc get pods
+  172  oc rsh yourapp-6f87bdffc-bbx7j 
+  173  oc create serviceaccount yourapp-sa 
+  174  oc get scc |awk -F" " '{print $1}'
+  175  oc adm policy add-scc-to-user privileged -z yourapp-sa 
+  176  oc get pods
+  177  oc rsh yourapp-6f87bdffc-bbx7j 
+  178  oc edit serviceaccounts yourapp-sa 
+  179  oc edit deployment yourapp 
+  180  oc get pods
+  181  oc rsh yourapp-b5db7c7cb-gz2lv 
+  182  oc edit deployment yourapp 
+  183  oc create cronjob --dry-run=client -o yaml --image=registry.access.redhat.com/ubi9/ubi:9 --schedule='0 0 * * *' -- curl https://example.com > cron-job.yaml 
+  184  oc create cronjob --name mycronjob --dry-run=client -o yaml --image=registry.access.redhat.com/ubi9/ubi:9 --schedule='0 0 * * *' -- curl https://example.com > cron-job.yaml 
+  185  oc create cronjob  mycronjob --dry-run=client -o yaml --image=registry.access.redhat.com/ubi9/ubi:9 --schedule='0 0 * * *' -- curl https://example.com > cron-job.yaml 
+  186  vim cron-job.yaml 
+  187  cat /etc/crontab 
+  188   lab start appsec-prune
+  189   oc new-project appsec-prune
+  190  oc project -q 
+  191  oc get pods
+  192  oc get sa
+  193  oc get cm
+  194  oc get all
+  195  cd ~/DO280/labs/appsec-prune
+  196  ll
+  197  vim configmap-prune.yaml 
+  198   oc get deployments -n prune-apps -o wide
+  199   oc get pods -n prune-apps -o wide
+  200  oc debug node/master01 --  chroot /host crictl images | egrep '^IMAGE|httpd|nginx'
+  201   oc debug node/master01 -- chroot /host crictl rmi --prune
+  202   oc get pods -n prune-apps -o wide
+  203  oc delete deployment nginx-ubi{7,8,9}  -n prune-apps
+  204  vim configmap-prune.yaml 
+  205  oc get cm
+  206  oc apply -f configmap-prune.yaml 
+  207  oc get cm
+  208  ll
+  209  vim cronjob-prune.yaml 
+  210  oc get cronjobs.batch 
+  211  oc apply -f cronjob-prune.yaml 
+  212  oc get cronjobs.batch 
+  213  watch oc get cronjobs.batch,pods
+  214  oc edit cronjobs.batch 
+  215  watch oc get cronjobs.batch,pods
+  216  oc get pods
+  217  oc logs  image-pruner-29759406-5pj65 
+  218   oc create sa image-pruner
+  219  oc adm policy add-scc-to-user privileged -z  image-pruner
+  220  oc adm policy add-cluster-role-to-user cluster-admin -z image-pruner
+  221  watch oc get cronjobs.batch,pods
+  222  oc edit cronjobs.batch 
+  223  watch oc get cronjobs.batch,pods
+  224  cd
+  225  lab start appsec-api
+  226   cd ~/DO280/labs/appsec-api
+  227  pwd
+  228  ll
+  229  tree
+  230   oc project configmap-reloader
+  231  oc project -q 
+  232  oc get all
+  233  oc get cm
+  234  oc get secret 
+  235  oc create sa configmap-reloader-sa
+  236  ll
+  237  vim reloader-deployment.yaml 
+  238  oc apply -f reloader-deployment.yaml 
+  239  oc get pods
+  240  oc login -u developer -p developer 
+  241   oc new-project appsec-api
+  242  oc policy add-role-to-user edit  system:serviceaccount:configmap-reloader:configmap-reloader-sa --rolebinding-name=reloader-edit  -n appsec-api
+  243  oc get rolebinding
+  244  ll
+  245  tree
+  246  oc apply -f ./config-app/
+  247  oc getall
+  248  oc get all
+  249  oc get configmap config-app 
+  250  oc get configmap config-app  --output="jsonpath={.data.config\.yaml}"
+  251  oc get cm config-app -o yaml 
+  252  oc get configmap config-app  --output="jsonpath={.data.config\.yaml}"
+  253  vim config-app/configmap.yaml 
+  254   oc apply -f config-app/configmap.yaml
+  255  oc get pods 
+  256  oc get route 
+  257  curl  -s https://config-app-appsec-api.apps.ocp4.example.com/config | jq
+  258  oc get cm 
+  259  oc get cm config-app -o yaml 
+  260  cd
+  261  lab start non-http-multus
+  262  oc whoami 
+  263   oc new-project non-http-multus
+  264  oc project -q 
+  265   oc apply -f ~/DO280/labs/non-http-multus/deployment-multus.yaml
+  266  oc get pods 
+  267  oc get pvc 
+  268  oc get secret 
+  269  oc get pods 
+  270  oc get nodes 
+  271  oc debug node/master01 
+  272  route  -n 
+  273  ping 192.168.50.10
+  274  ping 192.168.51.10
+  275  ssh lab@utility 
+  276  cd DO280/labs/non-http-multus/lab-start/
+  277  pwd
+  278  ll
+  279  vim resources.yaml 
+  280  cd ..
+  281  ll
+  282  vim network-attachment-definition.yaml 
+  283  oc apply -f network-attachment-definition.yaml 
+  284  vim network-attachment-definition.yaml 
+  285  oc apply -f network-attachment-definition.yaml 
+  286  vim network-attachment-definition.yaml 
+  287  oc apply -f network-attachment-definition.yaml 
+  288  vim network-attachment-definition.yaml 
+  289  oc apply -f network-attachment-definition.yaml 
+  290  oc get network-attachment-definitions.k8s.cni.cncf.io 
+  291  ll
+  292  vim deployment-multus.yaml 
+  293  oc apply -f deployment-multus.yaml 
+  294  oc get pods
+  295  oc get pods database-multus-84cf5d87d4-bxq89 -o  jsonpath='{.metadata.annotations.k8s\.v1\.cni\.cncf\.io/network-status}'
+  296  ssh utility 
+  297  psql -h 192.168.51.10 -U user sample -c 'SELECT 1;'
+  298  oc whoami --show-console 
+  299  oc project network-udn
+  300  oc get udn
+  301  oc get userdefinednetworks.k8s.ovn.org 
+  302  oc describe userdefinednetworks.k8s.ovn.org primary-udn 
+  303  oc apply -f ~/DO280/labs/non-http-multus/deployment-udn.yaml
+  304  oc get pods
+  305  oc get pods -o wide
+  306  oc get pod database-udn-5bff74bb5-qs2bm  -o jsonpath='{.metadata.annotations.k8s\.v1\.cni\.cncf\.io/network-status}'
+  307  cd
+  308  oc get oauth -o yaml 
+  309  oc whoami --show-ocons
+  310  oc whoami --show-console 
+  311  mkdir data
+  312  cd data/
+  313  pwd
+  314  ll
+  315  htpasswd --help 
+  316  touch htpasswd-{sre,devops,myapp}-file-upload
+  317  file * 
+  318  ls-l
+  319  touch htpasswd-{sre,devops,myapp}-file-upload
+  320  file * 
+  321  ls -l
+  322  for x in {1..5}; do htpasswd -b -B htpasswd-sre-file-upload user$x redhat; done
+  323  cat htpasswd-sre-file-upload
+  324  for x in {6..10}; do htpasswd -b -B htpasswd-devops-file-upload user$x redhat; done
+  325  ll
+  326  for x in {11..20}; do htpasswd -b -B htpasswd-myapp-file-upload user$x redhat; done
+  327  ll
+  328  cat htpasswd-devops-file-upload 
+  329  vim htpasswd-sre-file-upload 
+  330  ll
+  331  oc whoami 
+  332  oc status 
+  333  oc create secret generic secret-sre --from-file htpasswd=htpasswd-sre-file-upload -n openshift-config 
+  334  oc create secret generic secret-devops --from-file htpasswd=htpasswd-devops-file-upload -n openshift-config 
+  335  oc create secret generic secret-myapp --from-file htpasswd=htpasswd-myapp-file-upload -n openshift-config 
+  336  oc projects |grep "openshift-"
+  337  oc whoami '
+  338  oc whoami 
+  339  oc project -q 
+  340  oc new-project demo01
+  341  oc project -q 
+  342  oc create namespace demo02
+  343  oc project -q 
+  344  oc project demo02 
+  345  oc project -q
+  346  oc get project
+  347  oc project -q
+  348  oc create secret generic secret-myapp --from-file htpasswd=htpasswd-myapp-file-upload 
+  349  oc get secret 
+  350  oc project -q
+  351  oc get nodes
+  352  kubectl get nodes
+  353  oc get secret -n openshift-config | grep "secret-"
+  354  oc get secret secret-sre -o yaml 
+  355  oc get secret secret-sre -o yaml -n openshift-config 
+  356  oc get secret secret-sre -n openshift-config -o jsonpath='{.data.htpasswd}' 
+  357  oc get secret secret-sre -n openshift-config -o jsonpath='{.data.htpasswd}' ; echo 
+  358  oc get secret secret-sre -n openshift-config -o jsonpath='{.data.htpasswd}' |base64 -d
+  359  oc create configmap cm-sre --from-file htpasswd=htpasswd-sre-file-upload -n openshift-config 
+  360  oc get cm cm-sre 
+  361  oc get cm cm-sre -n openshift-config 
+  362  oc get cm cm-sre -n openshift-config -o yaml 
+  363  oc get secret -n openshift-config | grep "secret-"
+  364  oc get oauth cluster 
+  365  oc get oauth cluster -o yaml > oauth.yaml 
+  366  vim oauth.yaml 
+  367  oc apply -f oauth.yaml 
+  368  oc get oauth -o yaml 
+  369  oc get pods -n openshift-authentication
+  370  watch oc get pods -n openshift-authentication
+  371  oc get pods -n openshift-authentication-operator 
+  372  oc get pods -n openshift-authentication
+  373  oc get pods -n openshift-authentication-operator 
+  374  oc get pods -n openshift-apiserver
+  375  oc get pods -n openshift-apiserver-operator 
+  376  oc get pods -n openshift-kube-apiserver
+  377  oc get pods -n openshift-kube-apiserver-operator 
+  378  kubectl get nodes
+  379  oc whoami 
+  380  for x in {1..20}; do
+  381  oc get users
+  382  for x in {1..20}; do oc login -u user$x -p redhat https://api.ocp4.example.com:6443; done
+  383  oc whoami 
+  384  oc get users
+  385  oc login -u admin -p redhatocp https://api.ocp4.example.com:6443 
+  386  history | grep login | grep admin 
+  387  oc login -u admin -p redhatocp https://api.ocp4.example.com:6443 
+  388  oc whoami 
+  389  oc get users | grep -i sre
+  390  oc get users | grep -i devops
+  391  oc get users | grep -i myapp
+  392  cd
+  393  oc get groups
+  394  ssh lab@utility 
+  395  oc adm groups 
+  396  oc adm groups --help |less
+  397  oc adm groups new sre-grp --dry-run=client -o yaml > sre-grp.yaml 
+  398  vim sre-grp.yaml 
+  399  oc explain statefulset |less
+  400  vim statefulset.yaml 
+  401  oc explain statefulset.spec |less
+  402  ll
+  403  oc get groups
+  404  oc create -f sre-grp.yaml --save-config 
+  405  oc get groups
+  406  oc adm groups new devops-grp 
+  407  oc adm groups new myapp-grp 
+  408  oc get groups
+  409  oc adm groups add-users --help |less
+  410  oc adm groups add-users sre-grp user1 user2 user3 user4 user5 
+  411  oc get groups
+  412  for x in {6..10}; do oc adm groups add-users devops-grp user$x; done
+  413  oc get groups
+  414  for x in {11..20}; do oc adm groups add-users myapp-grp user$x; done
+  415  oc get users | grep sre 
+  416  oc get users | grep -i sre 
+  417  oc get groups | grep sre-grp 
+  418  oc get users | grep -i devops 
+  419  oc get users | grep -i devops
+  420  oc get groups | grep devops 
+  421  oc get groups | grep -i myapp
+  422  oc get users | grep -i myapp 
+  423  oc get clusterrolebindings | wc -l 
+  424  oc get rolebindings | wc -l 
+  425  oc get rolebindings 
+  426  oc get clusterroles | grep self-provis
+  427  oc describe clusterroles self-provisioner
+  428  oc get clusterrolesbindings | grep self-provis
+  429  oc get clusterrolebindings | grep self-provis
+  430  oc describe clusterrolebindings self-provisioners
+  431  oc login -u user15 -p redhat
+  432  oc new-project demo10
+  433  oc whoami 
+  434  oc login -u admin -p redhatocp https://api.ocp4.example.com:6443 
+  435  oc whoami 
+  436  oc describe clusterrolebindings self-provisioners
+  437  oc adm policy remove-cluster-role-from-group self-provisioner system:authenticated:oauth
+  438  oc describe clusterrolebindings self-provisioners
+  439  oc get clusterrolebindings | grep self-provis
+  440  oc get clusterroles | grep self-provis
+  441  oc adm policy add-cluster-role-to-group self-provisioner devops-grp 
+  442  oc get clusterrolebindings | grep self-provis
+  443  oc describe clusterrolebindings self-provisioners
+  444  oc describe clusterrolebindings self-provisioner
+  445  oc login -u user15 -p redhat
+  446  oc new-project demo11
+  447  oc describe clusterrolebindings |less
+  448  oc whoami 
+  449  oc login -u admin -p redhatocp https://api.ocp4.example.com:6443 
+  450  oc whoami 
+  451  oc describe clusterrolebindings |less
+  452  oc login -u user1 -p redhat 
+  453  oc project -q
+  454  oc login -u admin -p redhatocp https://api.ocp4.example.com:6443 
+  455  oc adm policy add-cluster-role-to-group cluster-admin sre-grp 
+  456  oc login -u user1 -p redhat 
+  457  oc get nodes
+  458  oc whoami 
+  459  oc login -u user17 -p redhat 
+  460  oc new-project demo13
+  461  oc whoami 
+  462  oc login -u user1 -p redhat 
+  463  oc whoami 
+  464  oc --help |less
+  465  oc new-project openshift-xyz 
+  466  oc adm new-project openshift-xyz 
+  467  oc --help |less
+  468  oc admin --help |less
+  469  oc adm --help |less
+  470  oc get nodes
+  471  oc adm cordon master01 
+  472  oc get nodes
+  473  oc adm uncordon master01 
+  474  oc get nodes
+  475  history 
+  476  oc adm policy add-cluster-role-to-group cluster-admin sre-grp 
+  477  oc version 
+  478  oc projects | grep ns-booking-app
+  479  oc create namespace ns-booking-app
+  480  oc projects | grep ns-booking-app
+  481  oc project ns-booking-app
+  482  oc project -q 
+  483  oc get all
+  484  oc whoami 
+  485  oc describe clusterrolebindings |less
+  486  oc adm policy add-role-to-user admin user11 -n ns-booking-app
+  487  oc project -q
+  488  oc project default 
+  489  oc describe rolebindings |less
+  490  oc project ns-booking-app 
+  491  oc project -q
+  492  oc describe rolebindings |less
+  493  oc login -u user11 -p redhat 
+  494  oc policy add-role-to-user admin user12 
+  495  oc project -q
+  496  oc describe rolebindings |less
+  497  oc adm policy add-role-to-user admin user13 
+  498  oc whoami 
+  499  oc adm policy add-cluster-role-to-user cluster-admin user11 
+  500  oc policy add-role-to-user edit user14
+  501  oc policy add-role-to-user edit user15
+  502  oc policy add-role-to-user edit user16
+  503  oc policy add-role-to-user edit user17
+  504  oc policy add-role-to-user edit user18
+  505  oc policy add-role-to-user view user19
+  506  oc policy add-role-to-user view user20
+  507  oc login -u user20 -p redhat 
+  508  oc new-app --name myapp  --image registry.ocp4.example.com:8443/redhattraining/hello-world-nginx:v1.0
+  509  oc new-app --name myapp registry.ocp4.example.com:8443/redhattraining/hello-world-nginx:v1.0
+  510  oc get is -n openshift
+  511  oc new-app --name myapp php:7.4-ubi8
+  512  oc whoami 
+  513  oc login -u user17 -p redhat 
+  514  oc new-app --name myapp php:7.4-ubi8
+  515  oc get pods
+  516  oc get svc
+  517  oc get deployment 
+  518  oc get replicaset 
+  519  oc login -u admin -p redhatocp https://api.ocp4.example.com:6443 
+  520  oc login -u admin -p redhatocp https://api.ocp4.example.com:6443 --loglevel 7 
+  521  oc login -u user1 -p redhat https://api.ocp4.example.com:6443 --loglevel 7 
+  522  history > history-session-01-Aug-2026.txt
