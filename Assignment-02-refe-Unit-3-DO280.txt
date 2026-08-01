@@ -1,0 +1,38 @@
+Assignment 02 — Digital Banking Platform
+Task 01: Configure Users and HTPasswd Identity Providers
+
+Users               Password      Secret                   Identity Provider
+--------------------------------------------------------------------------------
+bank-ops01–04       redhat        secret-bank-ops          IdP-DigitalBank-Ops
+bank-sec01–04       redhat        secret-bank-security     IdP-DigitalBank-Security
+bank-dev01–12       redhat        secret-bank-developer    IdP-DigitalBank-Developer
+
+
+Task 02: Create Groups and Assign Users
+Team                    OpenShift Group        Members
+----------------------------------------------------------------
+Bank Operations         bank-ops-grp           bank-ops01–04
+Security & Compliance   bank-security-grp      bank-sec01–04
+Application Developers  bank-developer-grp     bank-dev01–12
+
+
+Task 03: Configure Role-Based Access Control
+bank-ops-grp
+├── admin → ns-digitalbank-dev
+├── admin → ns-digitalbank-test
+└── edit  → ns-digitalbank-prod
+
+bank-security-grp
+├── view → ns-digitalbank-dev
+├── view → ns-digitalbank-test
+└── view → ns-digitalbank-prod
+
+bank-developer-grp
+├── bank-dev01–04 → admin in ns-digitalbank-dev
+├── bank-dev05–10 → edit in ns-digitalbank-dev
+└── bank-dev11–12 → view in ns-digitalbank-dev
+
+
+Additional requirements:
+1. Developers must not modify resources in ns-digitalbank-prod.
+2. Only bank-ops-grp can deploy or modify production applications.

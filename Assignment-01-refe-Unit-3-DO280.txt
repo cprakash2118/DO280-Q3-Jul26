@@ -1,0 +1,31 @@
+Assignment 01 — E-Commerce Platform
+Task 01: Configure Users and HTPasswd Identity Providers
+
+Users               Password      Secret                   Identity Provider
+--------------------------------------------------------------------------------
+ecom-sre01–05       redhat        secret-ecom-sre          IdP-Ecommerce-SRE
+ecom-dev01–05       redhat        secret-ecom-devops       IdP-Ecommerce-DevOps
+ecom-app01–10       redhat        secret-ecom-app          IdP-Ecommerce-App
+
+
+Task 02: Create Groups and Assign Users
+Team                 OpenShift Group         Members
+----------------------------------------------------------------
+E-Commerce SRE       ecom-sre-grp            ecom-sre01–05
+E-Commerce DevOps    ecom-devops-grp         ecom-dev01–05
+E-Commerce App       ecom-app-grp            ecom-app01–10
+
+
+
+Task 03: Configure Role-Based Access Control
+ecom-sre-grp
+└── cluster-admin access
+
+ecom-devops-grp
+└── self-provisioner access
+    Only this group can create projects/namespaces.
+
+ecom-app-grp in namespace ns-shopkart-prod
+├── ecom-app01–03 → admin
+├── ecom-app04–08 → edit
+└── ecom-app09–10 → view

@@ -1,0 +1,40 @@
+Assignment 03 — Healthcare Management Platform
+Task 01: Configure Users and HTPasswd Identity Providers
+
+Users                  Password    Secret                   Identity Provider
+--------------------------------------------------------------------------------
+health-admin01–03      redhat      secret-health-admin      IdP-Healthcare-Admin
+health-dev01–07        redhat      secret-health-dev        IdP-Healthcare-Dev
+health-support01–10    redhat      secret-health-support    IdP-Healthcare-Support
+
+
+Task 02: Create Groups and Assign Users
+
+Team                  OpenShift Group          Members
+--------------------------------------------------------------------
+Platform Admin        healthcare-admin-grp     health-admin01–03
+Development Team      healthcare-dev-grp       health-dev01–07
+Application Support   healthcare-support-grp   health-support01–10
+
+
+Task 03: Configure Role-Based Access Control
+healthcare-admin-grp
+└── cluster-admin access
+
+healthcare-dev-grp in namespace ns-medicare-app
+├── health-dev01–02 → admin
+├── health-dev03–06 → edit
+└── health-dev07    → view
+
+healthcare-support-grp
+├── view → ns-medicare-app
+└── ns-medicare-monitoring:
+    ├── health-support01–04 → edit
+    └── health-support05–10 → view
+	
+
+Additional requirements:
+1. Only healthcare-admin-grp can create namespaces.
+2. Developers can deploy applications but cannot manage RBAC.
+3. Support users can view application resources and logs.
+4. Only selected support users can modify monitoring resources.
